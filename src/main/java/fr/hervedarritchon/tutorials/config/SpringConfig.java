@@ -1,6 +1,8 @@
 package fr.hervedarritchon.tutorials.config;
 
 import com.couchbase.client.CouchbaseClient;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +34,15 @@ public class SpringConfig {
         }
 
         return client;
+    }
+
+    @Bean(name = "jodaTimeMapper")
+    public ObjectMapper getJodaTimeMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JodaModule());
+        objectMapper.configure(com.fasterxml.jackson.databind.SerializationFeature.
+                WRITE_DATES_AS_TIMESTAMPS, false);
+        return objectMapper;
     }
 
 }
